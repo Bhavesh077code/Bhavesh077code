@@ -13,30 +13,24 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Global Error Handler
-app.use((err, req, res, next) => {
-  console.error("🔥 Global Error:", err);
-
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || "Internal Server Error",
-  });
-});
-
-
+// Routes
 app.use("/user", userRoutes);
 app.use("/create", eventRoutes);
 
+// Global Error Handler - ALWAYS LAST
+app.use((err, req, res, next) => {
+    console.error("🔥 ERROR:", err);
+
+    return res.status(err.status || 500).json({
+        success: false,
+        message: err.message || "Internal Server Error",
+        error: err
+    });
+});
 
 connectDB();
 createAdmin();
 
-
-
-
-
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
-
-

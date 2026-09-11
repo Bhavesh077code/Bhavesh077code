@@ -7,7 +7,13 @@ import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
-router.post("/event", authMiddleware, adminOnly, upload.single("image"), createEvent);
+router.post(
+    "/event",
+    authMiddleware,
+    adminOnly,
+    upload.single("image"),
+    createEvent
+);
 
 
 export default router;
